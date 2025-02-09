@@ -16,10 +16,11 @@ jobs:
       - name: 🔹 레포지토리 체크아웃
         uses: actions/checkout@v3
 
-      - name: 🔐 SSH 키 생성
+      - name: 🔐 SSH 디렉토리 및 키 생성
         run: |
+          mkdir -p ~/.ssh  # SSH 디렉토리 생성 (없을 경우)
           echo "${{ secrets.EC2_SSH_KEY }}" | base64 --decode > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa  # 적절한 권한 설정
 
       - name: 🚀 EC2 서버에 SSH 접속 & 배포
         uses: appleboy/ssh-action@v0.1.4
