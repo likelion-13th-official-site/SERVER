@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  postgres-db:
+    image: postgres:latest
+    container_name: likelion13th-site-postgresql
+    restart: always
+    env_file:
+      - .env
+    networks:
+      - spring-network
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  spring-app:
+    image: blueredorange/likelion13th-site
+    container_name: likelion-site
+    restart: always
+    depends_on:
+      - postgres-db
+    env_file:
+      - .env
+    networks:
+      - spring-network
+    ports:
+      - "8080:8080"
+
+volumes:
+  postgres_data:
+
+networks:
+  spring-network:
+    driver: bridge
+
