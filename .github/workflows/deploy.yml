@@ -3,25 +3,17 @@ name: Deploy to EC2
 on:
   push:
     branches:
-      - main
+      - main  # 🚀 'main' 브랜치에 push될 때 실행
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Repository Checkout
+      - name: 🔹 레포지토리 체크아웃
         uses: actions/checkout@v3
 
-      - name: Docker Hub 로그인
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-
-      - name: Docker 이미지 빌드 & 푸시
-        run: |
-          docker build -t blueredorange/likelion13th-site .
-          docker push blueredorange/likelion13th-site
-
-      - name: EC2 서버에 접속 & 배포
+      - name: 🚀 EC2 서버에 SSH 접속 & 배포
         uses: appleboy/ssh-action@v0.1.4
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -29,6 +21,24 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd ~/spring-postgres
-            docker pull blueredorange/likelion13th-site
+
+            echo "🔄 최신 코드 Pull"
+            git pull origin main
+
+            echo "🛠️ 도커 컨테이너 중지"
             docker-compose down
-            docker-compose up -d
+
+            echo "🛠️ 도커 이미지 빌드 & 도커허브에 Push"
+            docker build -t blueredorange/likelion13th-site .
+            docker tag blueredorange/likelion13th-site blueredorange/likelion13th-site:latest
+            docker push blueredorange/likelion13th-site:latest
+
+            echo "🛠️ DB 먼저 실행"
+            docker-compose up -d postgres-db
+            sleep 10  # 🚀 DB가 먼저 실행될 시간을 줌
+
+            echo "🚀 Spring 애플리케이션 실행"
+            docker-compose up -d spring-app
+
+            echo "🛠️ 실행 중인 컨테이너 확인"
+            docker ps
