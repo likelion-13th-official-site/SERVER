@@ -23,7 +23,7 @@ jobs:
           chmod 600 ~/.ssh/id_rsa  # 적절한 권한 설정
 
       - name: 🚀 EC2 서버에 SSH 접속 & 배포
-        uses: appleboy/ssh-action@v0.1.4
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
