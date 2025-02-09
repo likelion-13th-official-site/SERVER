@@ -7,6 +7,7 @@ on:
   pull_request:
     branches:
       - master # PR이 'master' 브랜치에 merge될 때 실행
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -14,6 +15,11 @@ jobs:
     steps:
       - name: 🔹 레포지토리 체크아웃
         uses: actions/checkout@v3
+
+      - name: 🔐 SSH 키 생성
+        run: |
+          echo "${{ secrets.EC2_SSH_KEY }}" | base64 --decode > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
 
       - name: 🚀 EC2 서버에 SSH 접속 & 배포
         uses: appleboy/ssh-action@v0.1.4
