@@ -3,28 +3,35 @@ name: Deploy to EC2
 on:
   push:
     branches:
-      - master  # 🚀 'master' 브랜치에 push될 때 실행
+      - main
   pull_request:
     branches:
-      - master # PR이 'master' 브랜치에 merge될 때 실행
+      - main
 
 jobs:
-  deploy:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
       - name: 🔹 레포지토리 체크아웃
         uses: actions/checkout@v3
 
-      - name: 🛠️ EC2 SSH 키 저장 & 권한 설정
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ls -al ~/.ssh  # 디버깅용 (정상적으로 생성되었는지 확인)
+      - name: 🔑 Docker Hub 로그인
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
+      - name: 🛠️ Docker 이미지 빌드 및 Push (GitHub Actions에서 수행)
+        run: |
+          docker build -t blueredorange/likelion13th-site .
+          docker tag blueredorange/likelion13th-site blueredorange/likelion13th-site:latest
+          docker push blueredorange/likelion13th-site:latest
+
+  deploy:
+    needs: build-and-push  # 🔄 빌드 완료 후 실행
+    runs-on: ubuntu-latest
+
+    steps:
       - name: 🚀 EC2 서버에 SSH 접속 & 배포
-        uses: appleboy/ssh-action@master  # 최신 버전 사용
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
@@ -33,20 +40,18 @@ jobs:
           script: |
             cd ~/spring-postgres
 
-            echo "🔄 최신 코드 Pull"
-            git pull origin master
+            echo "🛠️ 최신 코드 Pull"
+            git pull origin main
 
-            echo "🛠️ 도커 컨테이너 중지"
+            echo "🛠️ 기존 컨테이너 중지"
             docker-compose down
 
-            echo "🛠️ 도커 이미지 빌드 & 도커허브에 Push"
-            docker build -t blueredorange/likelion13th-site .
-            docker tag blueredorange/likelion13th-site blueredorange/likelion13th-site:latest
-            docker push blueredorange/likelion13th-site:latest
+            echo "🛠️ 최신 Docker 이미지 Pull (EC2에서 빌드 안함)"
+            docker pull blueredorange/likelion13th-site:latest
 
-            echo "🛠️ DB 먼저 실행"
+            echo "🛠️ DB 컨테이너 실행"
             docker-compose up -d postgres-db
-            sleep 10  # 🚀 DB가 먼저 실행될 시간을 줌
+            sleep 10
 
             echo "🚀 Spring 애플리케이션 실행"
             docker-compose up -d spring-app
