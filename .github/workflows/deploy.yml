@@ -4,7 +4,9 @@ on:
   push:
     branches:
       - main  # 🚀 'main' 브랜치에 push될 때 실행
-
+  pull_request:
+    branches:
+      - main # PR이 'main' 브랜치에 merge될 때 실행
 jobs:
   deploy:
     runs-on: ubuntu-latest
