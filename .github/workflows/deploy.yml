@@ -16,18 +16,20 @@ jobs:
       - name: 🔹 레포지토리 체크아웃
         uses: actions/checkout@v3
 
-      - name: 🔐 SSH 디렉토리 및 키 생성
+      - name: 🛠️ EC2 SSH 키 저장 & 권한 설정
         run: |
-          mkdir -p ~/.ssh  # SSH 디렉토리 생성 (없을 경우)
-          echo "${{ secrets.EC2_SSH_KEY }}" | base64 --decode > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa  # 적절한 권한 설정
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ls -al ~/.ssh  # 디버깅용 (정상적으로 생성되었는지 확인)
 
       - name: 🚀 EC2 서버에 SSH 접속 & 배포
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@master  # 최신 버전 사용
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
           script: |
             cd ~/spring-postgres
 
