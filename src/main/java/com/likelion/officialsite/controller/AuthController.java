@@ -19,15 +19,15 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/send-code/signup")
-    public ResponseEntity<ApiResponse> sendAuthCode(@RequestBody SendCodeRequestDto requestDto){
-        ApiResponse response=authService.sendAuthCode(requestDto);
+    public ResponseEntity<ApiResponse> sendSignupCode(@RequestBody SendCodeRequestDto requestDto){
+        ApiResponse response=authService.sendSignupCode(requestDto);
         return ResponseEntity.ok(response);
     }
 
 
     @PostMapping("/verify-code")
-    public ResponseEntity<ApiResponse> verifyAuthCode(@RequestBody VerifyCodeRequestDto verifyCodeRequestDto){
-        ApiResponse response=authService.verifyAuthCode(verifyCodeRequestDto);
+    public ResponseEntity<ApiResponse> verifyCode(@RequestBody VerifyCodeRequestDto verifyCodeRequestDto){
+        ApiResponse response=authService.verifyCode(verifyCodeRequestDto);
         return ResponseEntity.ok(response);
 
     }

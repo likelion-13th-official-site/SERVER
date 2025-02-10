@@ -5,6 +5,7 @@ import com.likelion.officialsite.dto.request.SendCodeRequestDto;
 import com.likelion.officialsite.dto.request.VerifyCodeRequestDto;
 import com.likelion.officialsite.dto.response.ApiResponse;
 import com.likelion.officialsite.entity.Application;
+import com.likelion.officialsite.exception.DuplicateEmailException;
 import com.likelion.officialsite.repository.ApplicationRepository;
 import com.univcert.api.UnivCert;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,11 @@ public class AuthService {
     private static final String univName="서강대학교";
     private final ApplicationRepository applicationRepository;
 
-    public ApiResponse sendAuthCode(SendCodeRequestDto sendCodeRequestDto){
+    public ApiResponse sendSignupCode(SendCodeRequestDto sendCodeRequestDto){
+        if(applicationRepository.existsByEmail(sendCodeRequestDto.getEmail())){
+            throw new DuplicateEmailException("이미 존재하는 이메일입니다.");
+        }
+
         try {
             UnivCert.clear(key, sendCodeRequestDto.getEmail());  //인증 목록에서 유저 제거
             Map<String,Object> result=UnivCert.certify(key, sendCodeRequestDto.getEmail(),univName,true);
@@ -40,7 +45,7 @@ public class AuthService {
     }
 
 
-    public ApiResponse verifyAuthCode(VerifyCodeRequestDto verifyCodeRequestDto) {
+    public ApiResponse verifyCode(VerifyCodeRequestDto verifyCodeRequestDto) {
         try{
             Map<String,Object> result=UnivCert.certifyCode(key,verifyCodeRequestDto.getEmail(),univName,verifyCodeRequestDto.getCode());
             if((boolean)result.get("success")){
