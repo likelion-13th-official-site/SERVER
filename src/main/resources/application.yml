@@ -22,3 +22,4 @@ spring:
 
 univcert:
   api-key: ${UNIVCERT_API_KEY}
+  univ-name: "서강대학교"

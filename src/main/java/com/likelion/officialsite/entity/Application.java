@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Entity
 @Table(name = "applications")
@@ -82,4 +83,6 @@ public class Application {
     public void updatePassword(String password){
         this.password=password;
     }
+
+
 }
