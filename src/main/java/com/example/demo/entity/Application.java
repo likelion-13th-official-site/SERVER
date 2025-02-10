@@ -10,22 +10,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "applications") // 테이블 이름 설정
+@Table(name = "applications")
 public class Application {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // 기본 키
+    @Column(name = "application_id")
+    private Long id;
 
     @Column(nullable = false)
     private String name;
@@ -47,39 +44,37 @@ public class Application {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Path path;
+    private Path path; //지원 경로
 
-    @Enumerated(EnumType.STRING) // 지원 분야 ENUM
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Track track;
 
-
-    @Column(nullable = false,length = 500)
+    @Column(nullable = false, length = 500)
     private String question_1;
 
-    @Column(nullable = false,length = 500)
+    @Column(nullable = false, length = 500)
     private String question_2;
-    @Column(nullable = false,length = 500)
+
+    @Column(nullable = false, length = 500)
     private String question_3;
-    @Column(nullable = false,length = 500)
+
+    @Column(nullable = false, length = 500)
     private String question_4;
 
-    @ElementCollection
-    @CollectionTable(name = "interviewTime",joinColumns = @JoinColumn(name = "entity_id"))
-    @Column(nullable = false)
-    private List<String> interviewTime;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "application_id")
+    private List<InterviewTime> interviewTimes;
 
     @Column(length = 255)
     private String githubLink;
 
-    @Enumerated(EnumType.STRING) //한글 enum 사용시 필수적으로 명시
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Status status;
 
-    @Column(nullable=true)
-    @DateTimeFormat(pattern = "MM-dd HH:mm")
-    @JsonFormat(pattern = "MM-dd HH:mm")
-    private LocalDateTime confirmedInterviewTime;
-
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "confirmed_interview_time_id")
+    private InterviewTime confirmedInterviewTime; // 확정된 인터뷰 시간
 
 }
