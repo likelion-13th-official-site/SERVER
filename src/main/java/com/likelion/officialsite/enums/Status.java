@@ -1,4 +1,4 @@
-package com.example.demo.enums;
+package com.likelion.officialsite.enums;
 
 public enum Status {
     지원함,
