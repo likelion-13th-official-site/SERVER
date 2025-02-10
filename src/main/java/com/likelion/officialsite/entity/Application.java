@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Entity
 @Table(name = "applications")
@@ -78,5 +79,10 @@ public class Application {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "confirmed_interview_time_id")
     private InterviewTime confirmedInterviewTime; // 확정된 인터뷰 시간
+
+    public void updatePassword(String password){
+        this.password=password;
+    }
+
 
 }
