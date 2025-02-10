@@ -5,6 +5,7 @@ import com.likelion.officialsite.entity.Application;
 import com.likelion.officialsite.entity.InterviewTime;
 import com.likelion.officialsite.enums.Status;
 import com.likelion.officialsite.exception.DuplicateEmailException;
+import com.likelion.officialsite.exception.InvalidPasswordException;
 import com.likelion.officialsite.repository.ApplicationRepository;
 import com.likelion.officialsite.repository.InterviewTimeRepository;
 import org.springframework.stereotype.Service;
@@ -24,11 +25,12 @@ public class ApplicationService {
 
     public void createApplication(ApplicationRequestDto requestDto) {
         // 이메일 중복 체크
-        if (applicationRepository.existsByEmail(requestDto.getEmail())) {
+        Application existingApplication = applicationRepository.findByEmail(requestDto.getEmail())
+                .orElse(null);
+
+        if (existingApplication != null) {
             throw new DuplicateEmailException("이미 존재하는 이메일입니다.");
         }
-
-        // Password 검증, 기타 로직 추가 가능
 
         // 인터뷰 가능한 시간 매핑
         List<InterviewTime> selectedTimes = interviewTimeRepository.findAllById(requestDto.getInterviewTimes());

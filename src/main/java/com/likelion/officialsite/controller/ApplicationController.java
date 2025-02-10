@@ -17,8 +17,9 @@ public class ApplicationController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse> createApplication(@RequestBody ApplicationRequestDto requestDto) {
+    public ResponseEntity<ApiResponse<String>> createApplication(@RequestBody ApplicationRequestDto requestDto) {
         applicationService.createApplication(requestDto);
-        return ResponseEntity.ok(new ApiResponse(true, "지원서가 성공적으로 생성되었습니다."));
+        ApiResponse<String> response = new ApiResponse<>(true, "200", "지원서가 성공적으로 생성되었습니다.", null);
+        return ResponseEntity.ok(response);
     }
 }
