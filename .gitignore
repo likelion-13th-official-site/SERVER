@@ -4,6 +4,19 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+# 환경 파일
+.env*
+.env
+# 빌드 폴더
+/build
+# 환경 파일
+# 로그 파일
+*.log
+
+# IDE 설정 파일
+.idea/
+.gradle/
+# 빌드 폴더
 
 ### STS ###
 .apt_generated

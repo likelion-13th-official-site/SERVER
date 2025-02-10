@@ -3,12 +3,17 @@ package com.example.demo.entity;
 import com.example.demo.enums.Path;
 import com.example.demo.enums.Status;
 import com.example.demo.enums.Track;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -70,6 +75,11 @@ public class Application {
     @Enumerated(EnumType.STRING) //한글 enum 사용시 필수적으로 명시
     @Column(nullable = false)
     private Status status;
+
+    @Column(nullable=true)
+    @DateTimeFormat(pattern = "MM-dd HH:mm")
+    @JsonFormat(pattern = "MM-dd HH:mm")
+    private LocalDateTime confirmedInterviewTime;
 
 
 }
