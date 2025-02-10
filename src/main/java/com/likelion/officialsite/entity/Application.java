@@ -79,4 +79,7 @@ public class Application {
     @JoinColumn(name = "confirmed_interview_time_id")
     private InterviewTime confirmedInterviewTime; // 확정된 인터뷰 시간
 
+    public void updatePassword(String password){
+        this.password=password;
+    }
 }

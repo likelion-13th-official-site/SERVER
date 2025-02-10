@@ -1,8 +1,11 @@
 package com.likelion.officialsite.service;
 
+import com.likelion.officialsite.dto.request.ResetPasswordDto;
 import com.likelion.officialsite.dto.request.SendCodeRequestDto;
 import com.likelion.officialsite.dto.request.VerifyCodeRequestDto;
 import com.likelion.officialsite.dto.response.ApiResponse;
+import com.likelion.officialsite.entity.Application;
+import com.likelion.officialsite.repository.ApplicationRepository;
 import com.univcert.api.UnivCert;
 import lombok.RequiredArgsConstructor;
 
@@ -18,10 +21,11 @@ public class AuthService {
     @Value("${univcert.api-key}")
     private String key;
     private static final String univName="서강대학교";
+    private final ApplicationRepository applicationRepository;
 
     public ApiResponse sendAuthCode(SendCodeRequestDto sendCodeRequestDto){
         try {
-            UnivCert.clear(key, sendCodeRequestDto.getEmail());  //400에러 방지
+            UnivCert.clear(key, sendCodeRequestDto.getEmail());  //인증 목록에서 유저 제거
             Map<String,Object> result=UnivCert.certify(key, sendCodeRequestDto.getEmail(),univName,true);
             if((boolean)result.get("success")){
                 return new ApiResponse(true,"인증 코드를 성공적으로 전송했습니다.");
@@ -52,7 +56,11 @@ public class AuthService {
 
     }
 
-    public void resetPassword(){
+    public void resetPassword(ResetPasswordDto resetPasswordDto)  {
+        Application app=applicationRepository.findByEmail(resetPasswordDto.getEmail());
+        //비밀번호 검증 로직 추가
+        app.updatePassword(resetPasswordDto.getPassword());
+        applicationRepository.save(app);
 
     }
 }
