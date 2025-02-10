@@ -24,17 +24,23 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/send-code/reset")
+    public ResponseEntity<ApiResponse> sendResetCode(@RequestBody SendCodeRequestDto requestDto){
+        ApiResponse response=authService.sendResetCode(requestDto);
+        return ResponseEntity.ok(response);
+    }
+
 
     @PostMapping("/verify-code")
-    public ResponseEntity<ApiResponse> verifyCode(@RequestBody VerifyCodeRequestDto verifyCodeRequestDto){
-        ApiResponse response=authService.verifyCode(verifyCodeRequestDto);
+    public ResponseEntity<ApiResponse> verifyCode(@RequestBody VerifyCodeRequestDto requestDto){
+        ApiResponse response=authService.verifyCode(requestDto);
         return ResponseEntity.ok(response);
 
     }
 
     @PostMapping("/reset-password")
-    public ResponseEntity<ApiResponse> resetPassword(@RequestBody ResetPasswordDto resetPasswordDto ){
-        authService.resetPassword(resetPasswordDto);
+    public ResponseEntity<ApiResponse> resetPassword(@RequestBody ResetPasswordDto requestDto ){
+        authService.resetPassword(requestDto);
         return ResponseEntity.ok(new ApiResponse(true,"비밀번호 변경 완료"));
     }
 
