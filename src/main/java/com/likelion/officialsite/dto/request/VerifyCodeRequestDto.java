@@ -5,6 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SendCodeRequestDto {
+public class VerifyCodeRequestDto {
     private String email;
+    private int code;
 }

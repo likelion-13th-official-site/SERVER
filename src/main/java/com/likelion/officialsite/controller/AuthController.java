@@ -1,6 +1,7 @@
 package com.likelion.officialsite.controller;
 
-import com.likelion.officialsite.dto.request.AuthRequestDto;
+import com.likelion.officialsite.dto.request.SendCodeRequestDto;
+import com.likelion.officialsite.dto.request.VerifyCodeRequestDto;
 import com.likelion.officialsite.dto.response.ApiResponse;
 import com.likelion.officialsite.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -17,15 +18,17 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/send-code")
-    public ResponseEntity<ApiResponse> sendAuthCode(@RequestBody AuthRequestDto requestDto){
+    public ResponseEntity<ApiResponse> sendAuthCode(@RequestBody SendCodeRequestDto requestDto){
         ApiResponse response=authService.sendAuthCode(requestDto);
         return ResponseEntity.ok(response);
     }
 
-//    @PostMapping("/verify-code")
-//    public ResponseEntity<ApiResponse> verifyAuthCode(){
-//
-//    }
+    @PostMapping("/verify-code")
+    public ResponseEntity<ApiResponse> verifyAuthCode(@RequestBody VerifyCodeRequestDto verifyCodeRequestDto){
+        ApiResponse response=authService.verifyAuthCode(verifyCodeRequestDto);
+        return ResponseEntity.ok(response);
+
+    }
 //
 //    @PostMapping("/reset-password")
 //    public ResponseEntity<ApiResponse> resetPassword(){
