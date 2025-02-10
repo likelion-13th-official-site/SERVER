@@ -4,17 +4,16 @@ import com.likelion.officialsite.enums.Path;
 import com.likelion.officialsite.enums.Status;
 import com.likelion.officialsite.enums.Track;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
-@Getter
-@Setter
-@NoArgsConstructor
 @Entity
 @Table(name = "applications")
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Application {
 
     @Id
@@ -60,9 +59,14 @@ public class Application {
     @Column(nullable = false, length = 1500)
     private String answer4;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "application_id")
-    private List<InterviewTime> interviewTimes;
+    @ManyToMany
+    @JoinTable(
+            name = "application_interview_time",
+            joinColumns = @JoinColumn(name = "application_id"),
+            inverseJoinColumns = @JoinColumn(name = "interview_time_id")
+    )
+    private List<InterviewTime> interviewTimes;  // 선택된 인터뷰 시간 리스트
+
 
     @Column(length = 255)
     private String githubLink;
