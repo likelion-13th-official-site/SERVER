@@ -1,14 +1,12 @@
-package com.example.demo.entity;
+package com.likelion.officialsite.entity;
 
-import com.example.demo.enums.Path;
-import com.example.demo.enums.Status;
-import com.example.demo.enums.Track;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.likelion.officialsite.enums.Path;
+import com.likelion.officialsite.enums.Status;
+import com.likelion.officialsite.enums.Track;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.List;
 
@@ -50,17 +48,17 @@ public class Application {
     @Column(nullable = false)
     private Track track;
 
-    @Column(nullable = false, length = 500)
-    private String question_1;
+    @Column(nullable = false, length = 1500) // UTF-8 기준 한글 500자
+    private String answer1;
 
-    @Column(nullable = false, length = 500)
-    private String question_2;
+    @Column(nullable = false, length = 1500)
+    private String answer2;
 
-    @Column(nullable = false, length = 500)
-    private String question_3;
+    @Column(nullable = false, length = 1500)
+    private String answer3;
 
-    @Column(nullable = false, length = 500)
-    private String question_4;
+    @Column(nullable = false, length = 1500)
+    private String answer4;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "application_id")
