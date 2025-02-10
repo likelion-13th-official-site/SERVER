@@ -15,6 +15,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
+    @ExceptionHandler(InterviewTimeNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleInterviewTimeNotFound(InterviewTimeNotFoundException ex) {
+        ApiResponse<Void> response = new ApiResponse<>(false, "404", ex.getMessage(), null);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
     @ExceptionHandler(InvalidPasswordException.class)
     public ResponseEntity<ApiResponse<Void>> handleInvalidPassword(InvalidPasswordException ex) {
         ApiResponse<Void> response = new ApiResponse<>(false, "401", ex.getMessage(), null);

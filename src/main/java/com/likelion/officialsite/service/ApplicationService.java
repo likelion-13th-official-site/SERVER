@@ -5,6 +5,7 @@ import com.likelion.officialsite.entity.Application;
 import com.likelion.officialsite.entity.InterviewTime;
 import com.likelion.officialsite.enums.Status;
 import com.likelion.officialsite.exception.DuplicateEmailException;
+import com.likelion.officialsite.exception.InterviewTimeNotFoundException;
 import com.likelion.officialsite.exception.InvalidPasswordException;
 import com.likelion.officialsite.repository.ApplicationRepository;
 import com.likelion.officialsite.repository.InterviewTimeRepository;
@@ -32,8 +33,13 @@ public class ApplicationService {
             throw new DuplicateEmailException("이미 존재하는 이메일입니다.");
         }
 
-        // 인터뷰 가능한 시간 매핑
-        List<InterviewTime> selectedTimes = interviewTimeRepository.findAllById(requestDto.getInterviewTimes());
+        // 인터뷰 가능한 시간 매핑 및 검증
+        List<Long> requestedIds = requestDto.getInterviewTimes();
+        List<InterviewTime> selectedTimes = interviewTimeRepository.findAllById(requestedIds);
+
+        if (selectedTimes.size() != requestedIds.size()) {
+            throw new InterviewTimeNotFoundException("요청한 인터뷰 시간 중 하나 이상을 찾을 수 없습니다.");
+        }
 
         Application application = Application.builder()
                 .name(requestDto.getName())
