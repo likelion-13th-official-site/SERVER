@@ -3,9 +3,16 @@ package com.likelion.officialsite.service;
 import com.likelion.officialsite.dto.request.ResultRequestDto;
 import com.likelion.officialsite.dto.response.DocumentResultResponseDto;
 import com.likelion.officialsite.entity.Application;
+<<<<<<< HEAD
 import com.likelion.officialsite.exception.InvalidEmailException;
 import com.likelion.officialsite.exception.InvalidPasswordException;
 import com.likelion.officialsite.repository.ApplicationRepository;
+=======
+import com.likelion.officialsite.exception.EmailValidationException;
+import com.likelion.officialsite.exception.InvalidPasswordException;
+import com.likelion.officialsite.exception.UserNotFoundException;
+import com.likelion.officialsite.repository.ApplicationRespository;
+>>>>>>> ecd8332 (Refactor 서류 결과 학인 기능)
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +31,11 @@ public class ResultService {
                 .orElse(null);
 
         if(application == null){ //존재하지 않는 이메일일 때
+<<<<<<< HEAD
             throw  new InvalidEmailException("유효하지 않는 이메일입니다");
+=======
+            throw  new UserNotFoundException("존재하지 않는 이메일입니다");
+>>>>>>> ecd8332 (Refactor 서류 결과 학인 기능)
         }else{ //존재하지만 비밀번호가 틀릴 때
             if(!application.getPassword().equals(resultRequestDto.getPassword())){
                 throw  new InvalidPasswordException("비밀번호가 틀렸습니다");
@@ -37,6 +48,7 @@ public class ResultService {
      * Applicant 엔티티 -> ApplicantResponseDto 변환
      */
     private DocumentResultResponseDto toDocumentResultResponseDto(Application application) {
+
         return DocumentResultResponseDto.builder()
                 .name(application.getName())
                 .track(application.getTrack())

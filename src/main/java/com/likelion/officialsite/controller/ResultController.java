@@ -15,7 +15,7 @@ public class ResultController {
 
     private final ResultService resultService;
 
-    @GetMapping("/document")
+    @PostMapping("/document")
     public ResponseEntity<ApiResponse<DocumentResultResponseDto>> getDocumentResult(@RequestBody ResultRequestDto resultRequestDto){
 
         DocumentResultResponseDto documentResultResponse  = resultService.getDocumentResult(resultRequestDto);

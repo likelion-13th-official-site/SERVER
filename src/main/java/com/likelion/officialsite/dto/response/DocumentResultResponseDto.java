@@ -19,9 +19,13 @@ public class DocumentResultResponseDto {
     private Status status;
     private Track track;
     private String name;
+<<<<<<< HEAD
     @JsonFormat(pattern = "MM-dd HH:mm")
     private LocalDateTime interviewStartTime;
 
     @JsonFormat(pattern = "MM-dd HH:mm")
+=======
+    private LocalDateTime interviewStartTime;
+>>>>>>> ecd8332 (Refactor 서류 결과 학인 기능)
     private LocalDateTime interviewEndTime;
 }
