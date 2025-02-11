@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "interview_times")
@@ -24,5 +25,8 @@ public class InterviewTime {
 
     @Column(nullable = false, name = "end_time")
     private LocalDateTime endTime;
+
+    @ManyToMany(mappedBy = "interviewTimes")
+    private List<Application> applications;
 
 }

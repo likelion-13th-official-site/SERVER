@@ -4,6 +4,7 @@ import com.likelion.officialsite.dto.request.ResultRequestDto;
 import com.likelion.officialsite.dto.response.ApiResponse;
 import com.likelion.officialsite.dto.response.DocumentResultResponseDto;
 import com.likelion.officialsite.entity.Application;
+import com.likelion.officialsite.exception.EmailValidationException;
 import com.likelion.officialsite.exception.InvalidEmailException;
 import com.likelion.officialsite.exception.InvalidPasswordException;
 import com.likelion.officialsite.repository.ApplicationRespository;
@@ -24,11 +25,16 @@ public class ResultService {
      */
     public DocumentResultResponseDto getDocumentResult(ResultRequestDto resultRequestDto){
 
+        //형식 오류
+        if (resultRequestDto.getEmail() == null || !resultRequestDto.getEmail().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+            throw new EmailValidationException("올바르지 않은 이메일 형식입니다.");
+        }
+
         Application application = applicationRespository.findByEmail(resultRequestDto.getEmail())
                 .orElse(null);
 
         if(application == null){ //존재하지 않는 이메일일 때
-            throw  new InvalidEmailException("유효하지 않는 이메일입니다");
+            throw  new EmailValidationException("유효하지 않는 이메일입니다");
         }else{ //존재하지만 비밀번호가 틀릴 때
             if(!application.getPassword().equals(resultRequestDto.getPassword())){
                 throw  new InvalidPasswordException("비밀번호가 틀렸습니다");
