@@ -44,17 +44,17 @@ public class ResultService {
         }
 =======
         //형식 오류
-//        if (resultRequestDto.getEmail() == null || !resultRequestDto.getEmail().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
-//            throw new EmailValidationException("올바르지 않은 이메일 형식입니다.");
-//        }
+        if (resultRequestDto.getEmail() == null || !resultRequestDto.getEmail().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+            throw new EmailValidationException("올바르지 않은 이메일 형식입니다.");
+        }
 
-        Application application = applicationRespository.findByEmail(resultRequestDto.getEmail()).get();
-//                .orElseThrow(()-> new UserNotFoundException("존재하지 않는 이메일 입니다"));
+        Application application = applicationRespository.findByEmail(resultRequestDto.getEmail())
+                .orElseThrow(()-> new UserNotFoundException("존재하지 않는 이메일 입니다"));
 
-//         //존재하지만 비밀번호가 틀릴 때
-//        if(!application.getPassword().equals(resultRequestDto.getPassword())){
-//            throw  new InvalidPasswordException("비밀번호가 틀렸습니다");
-//        }
+         //존재하지만 비밀번호가 틀릴 때
+        if(!application.getPassword().equals(resultRequestDto.getPassword())){
+            throw  new InvalidPasswordException("비밀번호가 틀렸습니다");
+        }
 
 >>>>>>> 45c140f (error : db not connection)
         return toDocumentResultResponseDto(application);
