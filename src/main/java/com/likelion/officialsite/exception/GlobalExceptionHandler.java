@@ -25,17 +25,15 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(InvalidPasswordException.class)
-<<<<<<< HEAD
     public ResponseEntity<ApiResponse> handleInvalidPasswordException(InvalidPasswordException ex) {
         return buildErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
-=======
+
     public ResponseEntity<ApiResponse<Void>> handleInvalidPassword(InvalidPasswordException ex) {
         ApiResponse<Void> response = new ApiResponse<>(false, 401, ex.getMessage(), null);
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
->>>>>>> 45c140f (error : db not connection)
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ApiResponse> handleUserNotFoundException(UserNotFoundException ex) {

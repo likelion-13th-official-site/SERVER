@@ -19,11 +19,8 @@ public class ResultController {
     public ResponseEntity<ApiResponse<DocumentResultResponseDto>> getDocumentResult(@RequestBody ResultRequestDto resultRequestDto){
 
         DocumentResultResponseDto documentResultResponse  = resultService.getDocumentResult(resultRequestDto);
-<<<<<<< HEAD
         ApiResponse<DocumentResultResponseDto> response =  new ApiResponse<>(true,200,"서류 전형 결과 조회를 성공",documentResultResponse);
-=======
-        ApiResponse<DocumentResultResponseDto> response =  new ApiResponse<>(true,"200","서류 전형 결과 조회를 성공했습니다.",documentResultResponse);
->>>>>>> 588e6f7 (Feat : 서류결 결과 확인 기능)
+
         return ResponseEntity.ok(response);
     }
 
