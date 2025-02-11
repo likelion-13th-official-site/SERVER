@@ -1,6 +1,7 @@
 package com.likelion.officialsite.service;
 
 import com.likelion.officialsite.dto.request.ApplicationRequestDto;
+import com.likelion.officialsite.dto.request.ApplicationUpdateDto;
 import com.likelion.officialsite.dto.response.ApplicationResponseDto;
 import com.likelion.officialsite.entity.Application;
 import com.likelion.officialsite.entity.InterviewTime;
@@ -92,6 +93,40 @@ public class ApplicationService {
 
         return responseDto;
     }
+
+    public void updateApplication(ApplicationUpdateDto updateDto) {
+        // 이메일로 기존 지원서 조회
+        Application existingApplication = applicationRepository.findByEmail(updateDto.getEmail())
+                .orElseThrow(() -> new UserNotFoundException("해당 이메일로 지원서를 찾을 수 없습니다."));
+
+        // 인터뷰 가능한 시간 조회
+        List<InterviewTime> selectedTimes = interviewTimeRepository.findAllById(updateDto.getInterviewTimes());
+
+        // 기존 지원서 값을 기반으로 새 객체 생성
+        Application updatedApplication = Application.builder()
+                .id(existingApplication.getId())  // 기존 ID 유지
+                .email(existingApplication.getEmail())  // 기존 이메일 유지
+                .password(existingApplication.getPassword()) // 기존 비밀번호 유지
+                .name(updateDto.getName())
+                .studentNum(updateDto.getStudentNum())
+                .major(updateDto.getMajor())
+                .phone(updateDto.getPhone())
+                .path(updateDto.getPath())
+                .track(updateDto.getTrack())
+                .answer1(updateDto.getAnswer1())
+                .answer2(updateDto.getAnswer2())
+                .answer3(updateDto.getAnswer3())
+                .answer4(updateDto.getAnswer4())
+                .githubLink(updateDto.getGithubLink())
+                .status(existingApplication.getStatus())  // 기존 상태 유지
+                .interviewTimes(selectedTimes)
+                .confirmedInterviewTime(existingApplication.getConfirmedInterviewTime())  // 기존 확정된 인터뷰 시간 유지
+                .build();
+
+        // 엔티티 저장 (기존 엔티티와 교체)
+        applicationRepository.save(updatedApplication);
+    }
+
 
 
 

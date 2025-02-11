@@ -1,6 +1,7 @@
 package com.likelion.officialsite.controller;
 
 import com.likelion.officialsite.dto.request.ApplicationRequestDto;
+import com.likelion.officialsite.dto.request.ApplicationUpdateDto;
 import com.likelion.officialsite.dto.response.ApiResponse;
 import com.likelion.officialsite.dto.response.ApplicationResponseDto;
 import com.likelion.officialsite.service.ApplicationService;
@@ -27,6 +28,12 @@ public class ApplicationController {
     public ResponseEntity<ApiResponse> viewApplication(@RequestBody ApplicationRequestDto requestDto) {
         ApplicationResponseDto responseDto = applicationService.findApplicationByEmailAndPassword(requestDto.getEmail(), requestDto.getPassword());
         return ResponseEntity.ok(new ApiResponse(true, 200, "지원서 조회 성공", responseDto));
+    }
+
+    @PutMapping
+    public ResponseEntity<ApiResponse> updateApplication(@RequestBody ApplicationUpdateDto updateDto) {
+        applicationService.updateApplication(updateDto);
+        return ResponseEntity.ok(new ApiResponse(true, 200, "지원서가 성공적으로 수정되었습니다."));
     }
 
 
