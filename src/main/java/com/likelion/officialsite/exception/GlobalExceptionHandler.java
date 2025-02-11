@@ -5,9 +5,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(VerificationFailedException.class)
     public ResponseEntity<ApiResponse> handleVerificationFailedException(VerificationFailedException ex) {
@@ -33,6 +38,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse> handleDuplicateEmailException(DuplicateEmailException ex) {
         return buildErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
+
     @ExceptionHandler(EmailValidationException.class)
     public ResponseEntity<ApiResponse> handleEmailValidationException(EmailValidationException ex){
         return buildErrorResponse(HttpStatus.BAD_REQUEST,ex.getMessage());
@@ -40,9 +46,9 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse> handleGenericException(Exception ex) {
+        log.error("Unhandled exception: ", ex);  // 예외 메시지 출력
         return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류가 발생했습니다.");
     }
-
 
 
     private ResponseEntity<ApiResponse> buildErrorResponse(HttpStatus status, String message) {
