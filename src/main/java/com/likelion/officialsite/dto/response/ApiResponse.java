@@ -5,10 +5,18 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class ApiResponse {
+public class ApiResponse<T> {
     private boolean success;
     private int code;
     private String message;
+    private T data;
+
+
+    public ApiResponse(boolean success,int code,String message){
+        this.message = message;
+        this.success = success;
+        this.code = code;
+    }
 
 
 }
