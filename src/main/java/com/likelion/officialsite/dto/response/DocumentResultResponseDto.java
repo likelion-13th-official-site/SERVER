@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Builder
 @Getter
 @Setter
@@ -15,5 +17,6 @@ public class DocumentResultResponseDto {
     private Status status;
     private Track track;
     private String name;
-    private InterviewTime confirmedInterviewTime;
+    private LocalDateTime interviewStartTime;
+    private LocalDateTime interviewEndTime;
 }

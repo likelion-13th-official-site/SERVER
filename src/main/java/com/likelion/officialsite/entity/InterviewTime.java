@@ -3,6 +3,7 @@ package com.likelion.officialsite.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -28,5 +29,6 @@ public class InterviewTime {
 
     @ManyToMany(mappedBy = "interviewTimes")
     private List<Application> applications;
+
 
 }
