@@ -16,6 +16,7 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
+        transaction.jta.platform: org.hibernate.service.jta.JtaPlatform
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     show-sql: true  # 콘솔에 SQL 로그 출력
