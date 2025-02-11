@@ -24,7 +24,6 @@ public class ResultService {
      */
     public DocumentResultResponseDto getDocumentResult(ResultRequestDto resultRequestDto){
 
-
         Application application = applicationRespository.findByEmail(resultRequestDto.getEmail())
                 .orElse(null);
 
@@ -35,8 +34,6 @@ public class ResultService {
                 throw  new InvalidPasswordException("비밀번호가 틀렸습니다");
             }
         }
-
-
         return toDocumentResultResponseDto(application);
     }
 

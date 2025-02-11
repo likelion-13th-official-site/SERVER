@@ -19,7 +19,7 @@ public class ResultController {
     public ResponseEntity<ApiResponse<DocumentResultResponseDto>> getDocumentResult(@RequestBody ResultRequestDto resultRequestDto){
 
         DocumentResultResponseDto documentResultResponse  = resultService.getDocumentResult(resultRequestDto);
-        ApiResponse<DocumentResultResponseDto> response =  new ApiResponse<>(true,"200","서류 전형 결과 조회를 성공",documentResultResponse);
+        ApiResponse<DocumentResultResponseDto> response =  new ApiResponse<>(true,"200","서류 전형 결과 조회를 성공했습니다.",documentResultResponse);
         return ResponseEntity.ok(response);
     }
 
