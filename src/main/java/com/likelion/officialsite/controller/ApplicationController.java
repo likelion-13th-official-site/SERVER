@@ -2,6 +2,7 @@ package com.likelion.officialsite.controller;
 
 import com.likelion.officialsite.dto.request.ApplicationRequestDto;
 import com.likelion.officialsite.dto.response.ApiResponse;
+import com.likelion.officialsite.dto.response.ApplicationResponseDto;
 import com.likelion.officialsite.service.ApplicationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,4 +22,12 @@ public class ApplicationController {
         applicationService.createApplication(requestDto);
         return ResponseEntity.ok(new ApiResponse(true, 200,"지원서가 성공적으로 생성되었습니다."));
     }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse> viewApplication(@RequestBody ApplicationRequestDto requestDto) {
+        ApplicationResponseDto responseDto = applicationService.findApplicationByEmailAndPassword(requestDto.getEmail(), requestDto.getPassword());
+        return ResponseEntity.ok(new ApiResponse(true, 200, "지원서 조회 성공", responseDto));
+    }
+
+
 }

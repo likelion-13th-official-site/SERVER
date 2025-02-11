@@ -33,6 +33,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse> handleDuplicateEmailException(DuplicateEmailException ex) {
         return buildErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
+
     @ExceptionHandler(EmailValidationException.class)
     public ResponseEntity<ApiResponse> handleEmailValidationException(EmailValidationException ex){
         return buildErrorResponse(HttpStatus.BAD_REQUEST,ex.getMessage());
