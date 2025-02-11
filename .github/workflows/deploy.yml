@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - master  # 🚀 'master' 브랜치에 push될 때 실행
-  pull_request:
-    branches:
-      - master # PR이 'master' 브랜치에 merge될 때 실행
 
 jobs:
   deploy:
