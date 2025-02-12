@@ -20,9 +20,8 @@ public class DocumentResultResponseDto {
     private Status status;
     private Track track;
     private String name;
-    @JsonFormat(pattern = "MM-dd HH:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime interviewStartTime;
-
-    @JsonFormat(pattern = "MM-dd HH:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime interviewEndTime;
 }

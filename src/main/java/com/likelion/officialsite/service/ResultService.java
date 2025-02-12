@@ -45,8 +45,8 @@ public class ResultService {
                 .name(application.getName())
                 .track(application.getTrack())
                 .status(application.getStatus())
-                .interviewStartTime(application.getConfirmedInterviewTime().getStartTime())
-                .interviewEndTime(application.getConfirmedInterviewTime().getEndTime())
+                .interviewStartTime(application.getConfirmedInterviewTime() != null ? application.getConfirmedInterviewTime().getStartTime() : null)
+                .interviewEndTime(application.getConfirmedInterviewTime() != null ? application.getConfirmedInterviewTime().getEndTime() : null)
                 .build();
     }
 
