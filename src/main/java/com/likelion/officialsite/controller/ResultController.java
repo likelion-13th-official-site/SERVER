@@ -3,6 +3,7 @@ package com.likelion.officialsite.controller;
 import com.likelion.officialsite.dto.request.ResultRequestDto;
 import com.likelion.officialsite.dto.response.ApiResponse;
 import com.likelion.officialsite.dto.response.DocumentResultResponseDto;
+import com.likelion.officialsite.dto.response.FinalResultResponseDto;
 import com.likelion.officialsite.service.ResultService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +25,11 @@ public class ResultController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/final")
-    public void getFinalResult(ResultRequestDto resultRequestDto){
+    @PostMapping("/final")
+    public ResponseEntity<ApiResponse<FinalResultResponseDto>> getFinalResult(@RequestBody ResultRequestDto resultRequestDto){
+        FinalResultResponseDto finalResultResponseDto  = resultService.getFinalResult(resultRequestDto);
+        ApiResponse<FinalResultResponseDto> response =  new ApiResponse<>(true,200,"최종 결과 조회를 성공",finalResultResponseDto);
 
+        return ResponseEntity.ok(response);
     }
 }
