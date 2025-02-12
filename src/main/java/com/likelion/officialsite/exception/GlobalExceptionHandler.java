@@ -14,6 +14,12 @@ public class GlobalExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
+    @ExceptionHandler(InvalidUserStatusException.class)
+    public ResponseEntity<ApiResponse> handleInvalidUserStatusException(InvalidUserStatusException ex) {
+        return buildErrorResponse(HttpStatus.FORBIDDEN, ex.getMessage());
+    }
+
+
     @ExceptionHandler(VerificationFailedException.class)
     public ResponseEntity<ApiResponse> handleVerificationFailedException(VerificationFailedException ex) {
         return buildErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
