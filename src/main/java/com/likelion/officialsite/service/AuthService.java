@@ -22,7 +22,6 @@ import java.util.regex.Pattern;
 public class AuthService {
    @Value("${univcert.api-key}")
     private String key;
-//    private static final String univName="서강대학교";
     @Value("${univcert.univ-name}")
     private String univName;
     private final ApplicationRepository applicationRepository;
@@ -30,10 +29,8 @@ public class AuthService {
     //지원서 신규 생성 - 인증 코드 전송
     public ApiResponse sendSignupCode(SendCodeRequestDto requestDto)  {
         String email=requestDto.getEmail();
-        if (email == null || !email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
-            throw new EmailValidationException("올바르지 않은 이메일 형식입니다.");
-        }
-        if(applicationRepository.existsByEmail(requestDto.getEmail())){
+        validateEmail(email);
+        if(applicationRepository.existsByEmail(email)){
             throw new DuplicateEmailException("이미 존재하는 이메일입니다.");
         }
         return sendCode(requestDto);
@@ -42,13 +39,27 @@ public class AuthService {
     //비밀번호 재설정 - 인증 코드 전송
     public ApiResponse sendResetCode(SendCodeRequestDto requestDto)  {
         String email=requestDto.getEmail();
-        if (email == null || !email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
-            throw new EmailValidationException("올바르지 않은 이메일 형식입니다.");
-        }
-        if(!applicationRepository.existsByEmail(requestDto.getEmail())){
+        validateEmail(email);
+        if(!applicationRepository.existsByEmail(email)){
             throw new UserNotFoundException("존재하지 않는 회원입니다.");
         }
         return sendCode(requestDto);
+    }
+
+    //이메일 검증
+    private void validateEmail(String email){
+        if(email==null){
+            throw new EmailValidationException("이메일을 입력해야 합니다.");
+        }
+
+        String emailPattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+        if(!Pattern.matches(emailPattern,email)){
+            throw new EmailValidationException("올바르지 않은 이메일 형식입니다.");
+        }
+
+        if(!email.endsWith("@sogang.ac.kr")){
+            throw new EmailValidationException("서강대학교 이메일만 입력할 수 있습니다.");
+        }
     }
 
     private ApiResponse sendCode(SendCodeRequestDto requestDto){
@@ -102,7 +113,7 @@ public class AuthService {
     }
 
     private void validatePassword(String password) {
-        String passwordPattern = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,20}$";
+        String passwordPattern = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d!@#$%^&*()-_+=]{8,20}$";
         if (!Pattern.matches(passwordPattern, password)) {
             throw new InvalidPasswordException("비밀번호는 8~20자의 영문과 숫자를 포함해야 합니다.");
         }
