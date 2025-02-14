@@ -48,6 +48,7 @@ public class ApplicationService {
                 .answer2(requestDto.getAnswer2())
                 .answer3(requestDto.getAnswer3())
                 .answer4(requestDto.getAnswer4())
+                .portfolioLink(requestDto.getPortfolioLink())
                 .githubLink(requestDto.getGithubLink())
                 .status(Status.지원함)
                 .interviewTimes(selectedTimes)
@@ -79,6 +80,7 @@ public class ApplicationService {
         responseDto.setPhone(application.getPhone());
         responseDto.setPath(application.getPath());
         responseDto.setTrack(application.getTrack());
+        responseDto.setPortfolioLink(application.getPortfolioLink());
         responseDto.setGithubLink(application.getGithubLink());
         responseDto.setAnswer1(application.getAnswer1());
         responseDto.setAnswer2(application.getAnswer2());
@@ -117,6 +119,7 @@ public class ApplicationService {
                 .answer2(updateDto.getAnswer2())
                 .answer3(updateDto.getAnswer3())
                 .answer4(updateDto.getAnswer4())
+                .portfolioLink(updateDto.getPortfolioLink())
                 .githubLink(updateDto.getGithubLink())
                 .status(existingApplication.getStatus())  // 기존 상태 유지
                 .interviewTimes(selectedTimes)

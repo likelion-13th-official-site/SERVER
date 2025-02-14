@@ -20,6 +20,7 @@ public class ApplicationResponseDto {
     private Path path;
     private Track track;
     private String githubLink;
+    private String portfolioLink;
     private String answer1;
     private String answer2;
     private String answer3;
