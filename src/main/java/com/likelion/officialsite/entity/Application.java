@@ -72,6 +72,9 @@ public class Application {
     @Column(length = 255)
     private String githubLink;
 
+    @Column(length = 1000)
+    private String portfolioLink;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Status status;

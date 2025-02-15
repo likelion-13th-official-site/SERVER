@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
-   @Value("${univcert.api-key}")
+    @Value("${univcert.api-key}")
     private String key;
     @Value("${univcert.univ-name}")
     private String univName;

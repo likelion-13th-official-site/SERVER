@@ -24,7 +24,7 @@ public class ApplicationController {
         return ResponseEntity.ok(new ApiResponse(true, 200,"지원서가 성공적으로 생성되었습니다."));
     }
 
-    @GetMapping
+    @PostMapping("/view")
     public ResponseEntity<ApiResponse> viewApplication(@RequestBody ApplicationRequestDto requestDto) {
         ApplicationResponseDto responseDto = applicationService.findApplicationByEmailAndPassword(requestDto.getEmail(), requestDto.getPassword());
         return ResponseEntity.ok(new ApiResponse(true, 200, "지원서 조회 성공", responseDto));

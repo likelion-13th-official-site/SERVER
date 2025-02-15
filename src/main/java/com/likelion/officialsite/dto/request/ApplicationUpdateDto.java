@@ -22,5 +22,6 @@ public class ApplicationUpdateDto {
     private String answer3;
     private String answer4;
     private String githubLink;
+    private String portfolioLink;
     private List<Long> interviewTimes;
 }
