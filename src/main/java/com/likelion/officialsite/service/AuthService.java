@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -121,13 +123,69 @@ public class AuthService {
 
 
 
-    public ApiResponse clearCertification(String email) {
+    // 특정 이메일 인증 초기화
+    public ApiResponse clearCertificationByEmail(String email) {
         try {
             UnivCert.clear(key, email);
-            return new ApiResponse(true, 200, "인증 목록에서 이메일을 삭제했습니다.");
+            return new ApiResponse(true, 200, "해당 이메일의 인증 기록이 삭제되었습니다.");
         } catch (IOException e) {
-            throw new UnivCertApiException("인증 목록 삭제 중 오류 발생", e);
+            throw new UnivCertApiException("이메일 인증 삭제 중 오류 발생", e);
         }
     }
+
+    // 전체 인증된 이메일 초기화
+    public ApiResponse clearAllCertifications() {
+        try {
+            Map<String, String> requestBody = new HashMap<>();
+            requestBody.put("key", key);
+
+            Map<String, Object> response = UnivCert.clear(key);
+            boolean success = (boolean) response.get("success");
+
+            if (success) {
+                return new ApiResponse(true, 200, "모든 이메일의 인증 기록이 초기화되었습니다.");
+            } else {
+                String message = response.get("message") != null ? response.get("message").toString() : "초기화 과정에서 오류가 발생했습니다.";
+                return new ApiResponse(false, 400, message);
+            }
+        } catch (IOException e) {
+            throw new UnivCertApiException("전체 이메일 인증 삭제 중 오류 발생", e);
+        }
+    }
+
+    public ApiResponse checkEmailStatus(String email) {
+        try {
+            Map<String, Object> result = UnivCert.status(key, email);
+            boolean isVerified = (boolean) result.get("success");
+
+            if (isVerified) {
+                return new ApiResponse(true, 200, "이메일이 인증된 상태입니다.");
+            } else {
+                String message = result.get("message") != null ? result.get("message").toString() : "이메일 인증이 완료되지 않았습니다.";
+                return new ApiResponse(false, 400, message);
+            }
+        } catch (IOException e) {
+            throw new UnivCertApiException("UnivCert API 통신 중 오류 발생", e);
+        }
+    }
+
+    // 인증된 사용자 목록 조회
+    public ApiResponse getCertifiedUsers() {
+        try {
+            Map<String, Object> response = UnivCert.list(key);
+            boolean success = (boolean) response.get("success");
+
+            if (success) {
+                List<Map<String, Object>> certifiedUsers = (List<Map<String, Object>>) response.get("data");
+                return new ApiResponse(true, 200, "인증된 사용자 목록 조회 성공", certifiedUsers);
+            } else {
+                String message = response.get("message") != null ? response.get("message").toString() : "사용자 목록 조회 중 오류 발생";
+                return new ApiResponse(false, 400, message);
+            }
+        } catch (IOException e) {
+            throw new UnivCertApiException("UnivCert API 통신 중 오류 발생", e);
+        }
+    }
+
 
 }
