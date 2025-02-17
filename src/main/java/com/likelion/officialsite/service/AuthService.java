@@ -121,5 +121,13 @@ public class AuthService {
 
 
 
+    public ApiResponse clearCertification(String email) {
+        try {
+            UnivCert.clear(key, email);
+            return new ApiResponse(true, 200, "인증 목록에서 이메일을 삭제했습니다.");
+        } catch (IOException e) {
+            throw new UnivCertApiException("인증 목록 삭제 중 오류 발생", e);
+        }
+    }
 
 }
