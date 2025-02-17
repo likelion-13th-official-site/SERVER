@@ -1,5 +1,6 @@
 package com.likelion.officialsite.controller;
 
+import com.likelion.officialsite.dto.request.EmailRequestDto;
 import com.likelion.officialsite.dto.request.ResetPasswordDto;
 import com.likelion.officialsite.dto.request.SendCodeRequestDto;
 import com.likelion.officialsite.dto.request.VerifyCodeRequestDto;
@@ -44,6 +45,12 @@ public class AuthController {
         return ResponseEntity.ok(new ApiResponse(true,200,"비밀번호 변경 완료"));
     }
 
+
+    @PostMapping("/clear-certification")
+    public ResponseEntity<ApiResponse> clearCertification(@RequestBody EmailRequestDto requestDto) {
+        ApiResponse response = authService.clearCertification(requestDto.getEmail());
+        return ResponseEntity.ok(response);
+    }
 
 
 }
