@@ -86,6 +86,9 @@ public class Application {
     @JoinColumn(name = "confirmed_interview_time_id")
     private InterviewTime confirmedInterviewTime; // 확정된 인터뷰 시간
 
+    @Column(length = 255)
+    private String interviewLocation; // 면접 장소
+
     @CreatedDate
     @Column(updatable = false, nullable = false)
     private LocalDateTime createdAt; // 생성일
