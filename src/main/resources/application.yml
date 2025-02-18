@@ -21,6 +21,33 @@ spring:
         format_sql: true
     show-sql: true  # 콘솔에 SQL 로그 출력
 
+
+  data:
+    redis:
+      host: ${REDIS_IP}
+      port: ${REDIS_PORT}
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${SMTP_USER}
+    password: ${SMTP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+      auth-code-expiration-millis: 1800000  # 30 * 60 * 1000 == 30?
+
+
+
 univcert:
   api-key: ${UNIVCERT_API_KEY}
   univ-name: "서강대학교"
+
+

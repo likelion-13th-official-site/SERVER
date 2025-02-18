@@ -36,6 +36,9 @@ dependencies {
 	implementation 'io.github.cdimascio:dotenv-java:3.0.0'//.env 파일 활성화
 	implementation 'com.github.in-seo:univcert:master-SNAPSHOT' //univcert
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 }
 
 tasks.named('test') {
