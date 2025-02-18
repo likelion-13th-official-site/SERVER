@@ -5,9 +5,12 @@ import com.likelion.officialsite.enums.Status;
 import com.likelion.officialsite.enums.Track;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.regex.Pattern;
 
 @Entity
 @Table(name = "applications")
@@ -15,6 +18,7 @@ import java.util.regex.Pattern;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class) // 생성일, 수정일 자동 관리
 public class Application {
 
     @Id
@@ -68,7 +72,6 @@ public class Application {
     )
     private List<InterviewTime> interviewTimes;  // 선택된 인터뷰 시간 리스트
 
-
     @Column(length = 255)
     private String githubLink;
 
@@ -83,9 +86,15 @@ public class Application {
     @JoinColumn(name = "confirmed_interview_time_id")
     private InterviewTime confirmedInterviewTime; // 확정된 인터뷰 시간
 
+    @CreatedDate
+    @Column(updatable = false, nullable = false)
+    private LocalDateTime createdAt; // 생성일
+
+    @LastModifiedDate
+    @Column(nullable = false)
+    private LocalDateTime updatedAt; // 수정일
+
     public void updatePassword(String password){
         this.password=password;
     }
-
-
 }
