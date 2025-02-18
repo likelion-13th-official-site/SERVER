@@ -1,19 +1,19 @@
-package com.likelion.officialsite.controller;
-
-import com.likelion.officialsite.dto.request.EmailRequestDto;
-import com.likelion.officialsite.dto.request.ResetPasswordDto;
-import com.likelion.officialsite.dto.request.SendCodeRequestDto;
-import com.likelion.officialsite.dto.request.VerifyCodeRequestDto;
-import com.likelion.officialsite.dto.response.ApiResponse;
-import com.likelion.officialsite.service.AuthService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-@RestController
-@RequiredArgsConstructor
-@RequestMapping("/auth")
-public class AuthController {
+//package com.likelion.officialsite.controller;
+//
+//import com.likelion.officialsite.dto.request.EmailRequestDto;
+//import com.likelion.officialsite.dto.request.ResetPasswordDto;
+//import com.likelion.officialsite.dto.request.SendCodeRequestDto;
+//import com.likelion.officialsite.dto.request.VerifyCodeRequestDto;
+//import com.likelion.officialsite.dto.response.ApiResponse;
+//import com.likelion.officialsite.service.AuthService;
+//import lombok.RequiredArgsConstructor;
+//import org.springframework.http.ResponseEntity;
+//import org.springframework.web.bind.annotation.*;
+//
+//@RestController
+//@RequiredArgsConstructor
+//@RequestMapping("/auth")
+//public class AuthController {
 //    private final AuthService authService;
 //
 //    @PostMapping("/send-code/signup")
@@ -69,4 +69,4 @@ public class AuthController {
 //        return ResponseEntity.ok(response);
 //    }
 
-}
+//}
