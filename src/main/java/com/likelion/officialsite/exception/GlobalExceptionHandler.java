@@ -51,6 +51,24 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(HttpStatus.BAD_REQUEST,ex.getMessage());
     }
 
+    @ExceptionHandler(EmailSendException.class)
+    public ResponseEntity<ApiResponse> handleEmailSendException(EmailSendException ex) {
+        log.error("이메일 전송 오류 발생: ", ex);
+        return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "이메일 전송 중 오류가 발생했습니다.");
+    }
+
+    @ExceptionHandler(RedisConnectionException.class)
+    public ResponseEntity<ApiResponse> handleRedisConnectionException(RedisConnectionException ex) {
+        log.error("Redis 연결 오류 발생: ", ex);
+        return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Redis 서버와의 연결 중 오류가 발생했습니다.");
+    }
+
+    @ExceptionHandler(EmailLimitExceededException.class)
+    public ResponseEntity<ApiResponse> handleEmailLimitExceededException(EmailLimitExceededException ex) {
+        return buildErrorResponse(HttpStatus.TOO_MANY_REQUESTS, ex.getMessage());
+    }
+
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse> handleGenericException(Exception ex) {
         log.error("Unhandled exception: ", ex);  // 예외 메시지 출력
