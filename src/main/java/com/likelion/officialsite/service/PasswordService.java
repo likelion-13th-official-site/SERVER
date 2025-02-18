@@ -19,4 +19,12 @@ public class PasswordService {
         return passwordEncoder.matches(rawPassword, hashedPassword);
     }
 
+    /**
+     * 비밀번호 검증 (입력된 비밀번호와 기존 해시된 비밀번호 비교)
+     */
+    public boolean verifyPassword(String rawPassword, String encodedPassword) {
+        return passwordEncoder.matches(rawPassword, encodedPassword);
+    }
+
+
 }
