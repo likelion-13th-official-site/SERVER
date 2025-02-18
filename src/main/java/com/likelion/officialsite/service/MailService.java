@@ -40,7 +40,7 @@ public class MailService {
     private static final int CODE_LENGTH = 6;
 
     private final ApplicationRepository applicationRepository;
-
+    private final PasswordService passwordService;
 
     // 인증번호 생성 (영문+숫자 조합)
     public String createCode() {
@@ -116,7 +116,7 @@ public class MailService {
     }
 
     //이메일 검증
-    private void validateEmail(String email){
+    public void validateEmail(String email){
         if(email==null){
             throw new EmailValidationException("이메일을 입력해야 합니다.");
         }
@@ -126,9 +126,9 @@ public class MailService {
             throw new EmailValidationException("올바르지 않은 이메일 형식입니다.");
         }
 
-        if(!email.endsWith("@sogang.ac.kr")){
-            throw new EmailValidationException("서강대학교 이메일만 입력할 수 있습니다.");
-        }
+//        if(!email.endsWith("@sogang.ac.kr")){
+//            throw new EmailValidationException("서강대학교 이메일만 입력할 수 있습니다.");
+//        }
     }
 
     //인증코드 검증
@@ -138,7 +138,7 @@ public class MailService {
             //예외처리
         }
         if(foundCode.equals(requestDto.getCode())){
-            return new ApiResponse(true,200,"서강대학교 학생 인증 성공");
+            return new ApiResponse(true,200,"인증 성공");
 
         }else{
             return new ApiResponse(false,400,"인증번호가 일치하지 않습니다.");
@@ -150,7 +150,7 @@ public class MailService {
         Application app=applicationRepository.findByEmail(requestDto.getEmail())
                 .orElseThrow(()->new UserNotFoundException("존재하지 않는 회원입니다."));
         validatePassword(requestDto.getPassword());
-        app.updatePassword(requestDto.getPassword());
+        app.updatePassword(passwordService.hashPassword(requestDto.getPassword())); //hash
         applicationRepository.save(app);
 
     }

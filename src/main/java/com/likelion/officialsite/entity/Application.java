@@ -41,7 +41,7 @@ public class Application {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false , length = 20)
+    @Column(nullable = false , length = 60)
     private String password;
 
     @Enumerated(EnumType.STRING)

@@ -11,6 +11,8 @@ import com.likelion.officialsite.exception.InvalidPasswordException;
 import com.likelion.officialsite.exception.UserNotFoundException;
 import com.likelion.officialsite.repository.ApplicationRepository;
 import com.likelion.officialsite.repository.InterviewTimeRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,12 +22,15 @@ public class ApplicationService {
 
     private final ApplicationRepository applicationRepository;
     private final InterviewTimeRepository interviewTimeRepository;
+    private final PasswordService passwordService;
 
-    public ApplicationService(ApplicationRepository applicationRepository, InterviewTimeRepository interviewTimeRepository) {
+    public ApplicationService(ApplicationRepository applicationRepository, InterviewTimeRepository interviewTimeRepository, PasswordService passwordService) {
         this.applicationRepository = applicationRepository;
         this.interviewTimeRepository = interviewTimeRepository;
+        this.passwordService = passwordService;
     }
 
+    //회원가입 시 비번 해시
     public void createApplication(ApplicationRequestDto requestDto) {
         // 이메일 중복 체크
         if (applicationRepository.existsByEmail(requestDto.getEmail())) {
@@ -35,10 +40,11 @@ public class ApplicationService {
         // 인터뷰 가능한 시간 매핑
         List<InterviewTime> selectedTimes = interviewTimeRepository.findAllById(requestDto.getInterviewTimes());
 
+
         Application application = Application.builder()
                 .name(requestDto.getName())
                 .email(requestDto.getEmail())
-                .password(requestDto.getPassword())
+                .password(passwordService.hashPassword(requestDto.getPassword())) //암호화
                 .studentNum(requestDto.getStudentNum())
                 .major(requestDto.getMajor())
                 .phone(requestDto.getPhone())
@@ -62,8 +68,8 @@ public class ApplicationService {
         Application application = applicationRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("해당 이메일로 지원서를 찾을 수 없습니다."));
 
-        // 비밀번호 확인
-        if (!application.getPassword().equals(password)) {
+        // 비밀번호 확인 - 암호화
+        if (!passwordService.checkPassword(password, application.getPassword())) {
             throw new InvalidPasswordException("비밀번호가 일치하지 않습니다.");
         }
 
