@@ -7,6 +7,7 @@ import com.likelion.officialsite.dto.request.VerifyCodeRequestDto;
 import com.likelion.officialsite.dto.response.ApiResponse;
 import com.likelion.officialsite.service.MailService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,10 +34,14 @@ public class MailController {
 
     @PostMapping("/verify-code")
     public ResponseEntity<ApiResponse> verifyCode(@RequestBody VerifyCodeRequestDto requestDto){
-        ApiResponse response=mailService.verifyCode(requestDto);
-        return ResponseEntity.ok(response);
+        ApiResponse response = mailService.verifyCode(requestDto);
 
+        if (!response.isSuccess()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+        return ResponseEntity.ok(response);
     }
+
 
     @PostMapping("/reset-password")
     public ResponseEntity<ApiResponse> resetPassword(@RequestBody ResetPasswordDto requestDto ){
