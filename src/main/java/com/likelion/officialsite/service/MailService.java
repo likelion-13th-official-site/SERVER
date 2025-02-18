@@ -59,7 +59,7 @@ public class MailService {
 
         MimeMessage message = emailSender.createMimeMessage();
         message.addRecipients(MimeMessage.RecipientType.TO, email); //보낼 이메일 설정
-        message.setSubject("서강대학교 멋쟁이 사자처럼 인증 번호"); //제목
+        message.setSubject("서강대학교 멋쟁이사자처럼 13기 인증 번호"); //제목
         message.setFrom(sender);
         message.setText(setContext(authCode), "utf-8", "html");
 
