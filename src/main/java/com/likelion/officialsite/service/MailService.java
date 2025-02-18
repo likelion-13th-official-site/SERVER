@@ -73,8 +73,22 @@ public class MailService {
             redisUtil.deleteData(email);
         }
 
+        // 이메일 요청 횟수를 Redis에서 관리 (60초 동안 3회까지 허용)
+        String key = "email_limit_" + email;
+        int limit = 3; // 허용되는 최대 요청 횟수
+        long timeWindow = 60; // 제한 시간 (초 단위)
+
+        if (redisUtil.existData(key)) {
+            int count = Integer.parseInt(redisUtil.getData(key));
+            if (count >= limit) {
+                throw new EmailLimitExceededException("너무 많은 이메일 요청이 발생했습니다. 잠시 후 다시 시도하세요.");
+            }
+            redisUtil.setDataExpire(key, String.valueOf(count + 1), timeWindow);
+        } else {
+            redisUtil.setDataExpire(key, "1", timeWindow);
+        }
+
         try {
-            redisUtil.setDataExpire("email_limit_" + email, "locked", 30);
             MimeMessage emailForm = createEmailForm(email);
             emailSender.send(emailForm);
         } catch (MessagingException e) {

@@ -63,6 +63,12 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Redis 서버와의 연결 중 오류가 발생했습니다.");
     }
 
+    @ExceptionHandler(EmailLimitExceededException.class)
+    public ResponseEntity<ApiResponse> handleEmailLimitExceededException(EmailLimitExceededException ex) {
+        return buildErrorResponse(HttpStatus.TOO_MANY_REQUESTS, ex.getMessage());
+    }
+
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse> handleGenericException(Exception ex) {
         log.error("Unhandled exception: ", ex);  // 예외 메시지 출력
